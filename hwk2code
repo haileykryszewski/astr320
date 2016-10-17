@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Oct  7 19:01:45 2016
+
+@author: haileykryszewski
+"""
+import statistics as sts
+from scipy import stats
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+print("Problem 6.4")
+x=np.array([2,4,6,8,10,12,14,16,18,20,22,24])
+x2=np.array([2,4,6,8,10,12,14,16,18,20,22,24])
+y=np.array([5.3,14.4,20.7,30.1,35,41.3,52.7,55.7,63,72.1,80.5,87.9])
+xy= x2 * y
+xySum=np.array(np.sum(xy))
+np.square(x,x)
+xSum=np.sum(x)
+x2Sum=np.sum(x2)
+ySum=np.sum(y)
+o_y=1.5
+delta=6864
+a=(xSum*ySum-x2Sum*xySum)/delta
+b=(12*xySum-x2Sum*ySum)/delta
+print("The line is y=",b,"x")
+sigmaBSquare=(1/delta)*(12/(1.5*1.5))
+sigmaBun=math.sqrt(sigmaBSquare)
+print("Uncertainity in b:",sigmaBun)
+x2mean=sts.mean(x2)
+ymean=sts.mean(y)
+x2SE=stats.sem(x2)
+ySE=stats.sem(y)
+xerr=x2mean-x2SE
+yerr=ymean-ySE
+chiVal=0
+for i in x2:
+    for j in y:
+        chiVal+=math.pow((j-a-b*i)/1.5,2)
+print("Chi-Square value is",chiVal)
+m,b2= np.polyfit(x2,y,1)
+print("The linear fit gives slope",m,"and intercept",b2)
+plt.plot(x2,y,'s',color='#0066FF')
+plt.plot(x2,m*x2+b2,'r-')
+plt.errorbar(x2,y,yerr,capsize=0,ls='none',color='black',elinewidth=2)
+plt.show()
+plt.plot(x2,y,'s',color='#0066FF')
+plt.plot(x2,b*x2,'r')
+plt.errorbar(x2,y,yerr,capsize=0,ls='none',color='black',elinewidth=2)
+plt.show()
+print("The two graphs from the two types of fit closely follow each other")
